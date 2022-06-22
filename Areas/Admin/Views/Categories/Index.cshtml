@@ -1,0 +1,78 @@
+﻿@using X.PagedList
+@using X.PagedList.Mvc.Core
+@using X.PagedList.Web.Common
+@model IPagedList<FastFood.Models.Categories>
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<h1>Danh Mục Sản Phẩm</h1>
+
+<p>
+    <a asp-action="Create" class="btn btn-primary btn-sm">Tạo mới</a>
+</p>
+
+
+
+@functions{
+    FoodDbContext db = new FoodDbContext();
+    public List<Categories> CategoriesSub(int _CategoryId)
+    {
+        List<Categories> _ListRecord = db.categories.Where(item => item.ParentId == _CategoryId).ToList();
+        return _ListRecord;
+    }
+}
+
+<div class="col-md-12">
+    <div class="panel panel-primary">
+        <div class="panel-heading">List cateogry</div>
+        <div class="panel-body">
+            <table class="table table-bordered table-hover">
+                <tr>
+                    <th>Name</th>
+                    <th style="width:100px;"></th>
+                </tr>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.Name</td>
+                        <td style="text-align:center;">
+                            <a href="/Admin/Categories/Edit/@item.Id">Edit</a>&nbsp;
+                            <a href="/Admin/Categories/Delete/@item.Id" ;">Delete</a>
+                        </td>
+                    </tr>
+                    List<Categories> _ListSub = CategoriesSub(item.Id);
+                    foreach (Categories itemSub in _ListSub)
+                    {
+                        <tr>
+                            <td style="padding-left:30px;">@itemSub.Name</td>
+                            <td style="text-align:center;">
+                                <a href="/Admin/Categories/Edit/@itemSub.Id">Edit</a>&nbsp;
+                                <a href="/Admin/Categories/Delete/@itemSub.Id" ;">Delete</a>
+                            </td>
+                        </tr>
+                    }
+                }
+            </table>
+
+            @Html.PagedListPager(
+    Model, p => Url.Action("Index", new {page = p}),
+    new PagedListRenderOptions 
+    {
+        PageClasses = new string[] { "page-link" },
+        UlElementClasses = new string[] { "pagination" },
+        LiElementClasses = new string[] { "page-item" }
+    }
+)
+
+            <style type="text/css">
+                .pagination {
+                    padding: 0px;
+                    margin: 0px;
+                }
+            </style>
+        </div>
+    </div>
+</div>
+<!-- end content -->

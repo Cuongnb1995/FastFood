@@ -1,0 +1,177 @@
+﻿<!-- Begin container -->
+<div class="container ctn_cart">
+    <div class="row_0">
+        <div class="col-8">
+            <div class="cart">
+                <h2>Giỏ hàng của bạn (sản phẩm)</h2>
+
+                @if (!String.IsNullOrEmpty(Context.Request.Query["checkout"]))
+                {
+                    <div class="success-checkout">
+                        <p>Tạo đơn hàng thành công.</p>
+                        <p>Chúng tôi sẽ liên hệ bạn sớm nhất để xử lý đơn hàng. Cám ơn bạn!</p>
+                    </div>
+
+                }
+
+                @if (ViewBag._cart != null)
+                {
+                    @foreach (var item in ViewBag._cart)
+                    {
+                        <div class="cart-detail">
+                            <div class="cart-detail__img">
+                                <img src="~/Upload//Products/@item.ProductRecord.Photo" alt="" width="125px" height="125px">
+                            </div>
+                            <div class="cart-detail__info">
+                                <h3>@item.ProductRecord.Name</h3>
+                                <div class="cart-detail__info--price">
+                                    <span class="ourproduct-item__cart-price--new"><span class="pricecal">@string.Format("{0:#,#.}",@item.ProductRecord.Price-@item.ProductRecord.Price*@item.ProductRecord.Discount/100)</span>₫ </span> <span class="ourproduct-item__cart-price--old">@string.Format("{0:#,#.}",item.ProductRecord.Price)₫</span> <span class="cart-detail__info--discount">-@item.ProductRecord.Discount%</span>
+                                </div>
+                                <p>Size: S</p>
+                            </div>
+                            <div class="cart-detail__input" data-id="@item.ProductRecord.Id">
+                                <button class="add" id="addchage">+</button>
+                                <input type="number" class="inputchage" name="" id="input_price" value="@item.Quantity" readonly="readonly">
+                                <button class="mute" id="mutechage">-</button>
+                            </div>
+                            <div class="total_price"><span class="total_price-dt">@string.Format("{0:#,#.}",(@item.ProductRecord.Price-@item.ProductRecord.Price*@item.ProductRecord.Discount/100)*@item.Quantity)</span><span>₫</span></div>
+                            <div class="del">
+                                <button class="del-btn">Xóa</button>
+                            </div>
+                        </div>
+                    }
+                }
+
+                <div class="continueShopping">
+                    <button><a href="/Home">Continue Shopping</a></button>
+                </div>
+            </div>
+
+        </div>
+        <div class="col-4">
+            @if (ViewBag._total > 0)
+            {
+                <div class="invoice">
+                    <div class="invoice__title">
+                        <h2>Hóa đơn</h2>
+                    </div>
+                    <div class="invoice__total">
+                        <div class="invoice__total--p">
+                            <h3>Thành tiền</h3>
+                        </div>
+                        <div class="invoice__total--price">
+                            <h3>
+                                <span class="invoice__total--priceval">
+                                    @string.Format("{0:#,#.}",ViewBag._total) ₫
+                                </span>
+                            </h3>
+                            <small>Đã bao gồm VAT nếu có</small>
+                        </div>
+                    </div>
+                    <div class="btn_ctr">
+                        <a href="/Cart/Checkout"><button>Tiến hành thanh toán</button></a>
+                    </div>
+                </div>
+            }
+        </div>
+
+    </div>
+
+
+</div>
+
+<!-- End container -->
+
+
+<script>
+    $('document').ready(function() {
+
+        $('body').on('click', '#addchage', function() {
+            var _id = $(this).parents('.cart-detail__input').data('id');
+            var _quantity = $(this).parents('.cart-detail__input').find('#input_price').val();
+            var _price = parseFloat($(this).parents('.cart-detail').find('.pricecal').html()) * 1000000;
+            var total_item = new Intl.NumberFormat('it-IT').format(_price * _quantity);
+            $(this).parents('.cart-detail').find('.total_price-dt').html(total_item);
+
+            var model = {
+                Id: _id,
+                Quantity: _quantity
+            };
+            LoadDataa(model);
+
+        });
+
+        $('body').on('click', '#mutechage', function() {
+            var _id = $(this).parents('.cart-detail__input').data('id');
+            var _quantity = $(this).parents('.cart-detail__input').find('#input_price').val();
+            var _price = parseFloat($(this).parents('.cart-detail').find('.pricecal').html()) * 1000000;
+            var total_item = new Intl.NumberFormat('it-IT').format(_price * _quantity);
+            $(this).parents('.cart-detail').find('.total_price-dt').html(total_item);
+
+            var model = {
+                Id: _id,
+                Quantity: _quantity
+            };
+            LoadDataa(model);
+
+        });
+
+        $('body').on('click', '.del-btn', function() {
+            var _id = $(this).parents('.cart-detail').find('.cart-detail__input').data('id');
+            var _quantity = $(this).parents('.cart-detail').find('#input_price').val();
+            var model = {
+                Id: _id,
+                Quantity: _quantity
+            };
+            LoadDataRemove(model);
+            $(this).parents('.cart-detail').remove();
+
+        });
+
+        function LoadDataa(model) {
+            $.ajax({
+                url: '/Cart/Update',
+                type: 'POST',
+                dataType: 'json',
+                data: model,
+                success: function(res) {
+                    var item = res.value;
+                    $('.invoice__total--priceval').html(new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(item.tien));
+                    $('#tien').html(sumArray(item.soluong));
+                    console.log(item);
+                }
+            });
+        }
+
+        function LoadDataRemove(model) {
+            $.ajax({
+                url: '/Cart/Remove',
+                type: 'POST',
+                dataType: 'json',
+                data: model,
+                success: function(res) {
+                    var item = res.value;
+                    $('.invoice__total--priceval').html(new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(item.tien));
+                    $('#tien').html(sumArray(item.soluong));
+                    console.log(item);
+                }
+            });
+        }
+
+        function sumArray(mang) {
+            let sum = 0;
+            let i = 0;
+            while (i < mang.length) {
+                sum += mang[i];
+                i++;
+            }
+            return sum;
+        }
+        function JSalert() {
+            swal("Cảm ơn bạn!", ", Thêm sản phẩm thành công!", "success", { buttons: false, timer: 1500 });
+        }
+
+
+    });
+
+</script>

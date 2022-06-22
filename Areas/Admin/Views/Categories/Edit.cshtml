@@ -1,0 +1,58 @@
+﻿@model FastFood.Models.Categories
+
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+
+@functions {
+    public FoodDbContext db = new FoodDbContext();
+    public List<Categories> Categories(int _CurrentItemId)
+    {
+        List<Categories> _ListRecord = db.categories.Where(item => item.ParentId == 0 && item.Id != _CurrentItemId).OrderByDescending(item => item.Id).ToList();
+        return _ListRecord;
+    }
+}
+
+<h1>Edit</h1>
+
+<h4>Categories</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <div class="form-group">
+                <select name="ParentId" class="form-control" style="width: 300px;">
+                    <option value="0"></option>
+
+                    @{
+                        int _CurrentId = 0;
+                        if (Model != null)
+                            _CurrentId = Convert.ToInt32(Model.Id);
+                        List<Categories> _ListCategories = Categories(_CurrentId);
+                    }
+                    @foreach (Categories item in _ListCategories)
+                    {
+                        <!option @if(ViewBag.CategoriesEdit == item.Id){<text>selected</text>} value="@item.Id">@item.Name</!option>
+                    }
+                </select>
+            </div>
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+

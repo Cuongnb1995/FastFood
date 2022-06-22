@@ -1,0 +1,139 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@model IEnumerable<FastFood.Models.ItemProducts>
+
+@functions {
+    public FoodDbContext db = new FoodDbContext();
+    public List<Categories> Categories()
+    {
+        List<Categories> _ListRecord = db.categories.Where(item => item.ParentId == 0).ToList();
+        return _ListRecord;
+    }
+    public List<Categories> CategoriesSub(int _CategoryId)
+    {
+        List<Categories> _ListRecord = db.categories.Where(item => item.ParentId == _CategoryId).ToList();
+        return _ListRecord;
+    }
+}
+
+@{
+    int _CategoryId = Convert.ToInt32(ViewBag.CategoryId.Id);
+    string strOrder = !String.IsNullOrEmpty(Context.Request.Query["order"]) ? Context.Request.Query["order"] : "";
+}
+
+<!-- Begin container -->
+<div class="container">
+    <div class="pagination">
+        <h2>@ViewBag.CategoryId.Name.ToUpper()</h2>
+        <span>Home</span><span>  >   </span><span><a href="">@ViewBag.CategoryId.Name</a></span>
+    </div>
+    <div class="row_0">
+
+        <div class="cookies col-3_1">
+            <div class="sidebar">
+                <h3>Danh Mục Sản Phẩm</h3>
+                <ul>
+                    @{
+                        List<Categories> _ListCategories = Categories();
+                    }
+                    @foreach (var item in _ListCategories)
+                    {
+                        <li style="font-weight:bold" class="@Html.Raw(ViewBag.CategoryId.Id == item.Id ? "actived_category" : "")">
+                            <a href="/Products/Category/@item.Id">@item.Name</a>
+                            @{
+                                List<Categories> _ListCategoriesSub = CategoriesSub(item.Id);
+                            }
+                                @foreach (Categories itemSub in _ListCategoriesSub)
+                                {
+                                        <li class="@Html.Raw(ViewBag.CategoryId.Id == itemSub.Id ? "actived_category" : "")" style="margin-left:10px"><a href="/Products/Category/@itemSub.Id">@itemSub.Name</a></li>
+                                }
+                        </li>
+                    }
+
+                </ul>
+
+                <h3 style="margin-top:40px;">Giá</h3>
+                <div class="cookies-price">
+                    <input type="checkbox" name="" id="">
+                    <label for="">0 ₫ - 600.000 ₫</label>
+                </div>
+                <div class="cookies-price">
+                    <input type="checkbox" name="" id="">
+                    <label for="">600.000 ₫ - 1.500.000 ₫</label>
+                </div>
+                <div class="cookies-price">
+                    <input type="checkbox" name="" id="">
+                    <label for="">1.500.000 ₫ - 3.000.000 ₫</label>
+                </div>
+                <div class="cookies-price">
+                    <input type="checkbox" name="" id="">
+                    <label for="">3.000.000 ₫ - 6.000.000 ₫</label>
+                </div>
+
+            </div>
+        </div>
+        <div class="col-9">
+            <div class="ourproduct-item">
+                <div class="product-sort">
+                    <h3>@ViewBag.CategoryId.Name</h3>
+                    <p>Lọc theo: </p>
+                    <select onchange="location.href = '/Products/Category/@_CategoryId?order='+this.value;">
+                        <!option value="0">Sắp xếp</!option>
+                        <!option @if(strOrder == "priceAsc"){<text>selected</text>} value="priceAsc">Giá tăng dần</!option>
+                        <!option @if(strOrder == "priceDesc"){<text>selected</text>} value="priceDesc">Giá giảm dần</!option>
+                        <!option @if(strOrder == "nameAsc"){<text>selected</text>} value="nameAsc">Sắp xếp A-Z</!option>
+                        <!option @if(strOrder == "nameDesc"){<text>selected</text>} value="nameDesc">Sắp xếp Z-A</!option>
+                    </select>
+                </div>
+
+                <div class="row-item">
+                    <!-- Begin -->
+
+                    @foreach (var item in Model)
+                    {
+                         <div class="col-3">
+                        <div class="ourproduct-item__detail">
+                            <a href="/Products/Detail/@item.Id"><img src="~/Upload/Products/@item.Photo" alt=""></a>
+                            <div class="ourproduct-item__star">
+                                <a href="/Products/Star/@item.Id?star=1"><i class="fa-solid fa-star"></i></a>
+                                <a href="/Products/Star/@item.Id?star=2"><i class="fa-solid fa-star"></i></a>
+                                <a href="/Products/Star/@item.Id?star=3"><i class="fa-solid fa-star"></i></a>
+                                <a href="/Products/Star/@item.Id?star=4"><i class="fa-solid fa-star"></i></a>
+                                <a href="/Products/Star/@item.Id?star=5"><i class="fa-solid fa-star"></i></a>
+                            </div>
+                            <div class="ourproduct-item__name">
+                                <a href="/Products/Detail/@item.Id"><h4>@item.Name</h4></a>
+                            </div>
+                            <div class="ourproduct-item__info">
+                                <p>@Html.Raw(item.Description)</p>
+                            </div>
+                            <div class="ourproduct-item__cart">
+                                <span class="ourproduct-item__cart-price">
+                                    <span class="ourproduct-item__cart-price--old">
+                                        @string.Format("{0:#,#.}",item.Price)đ
+                                    </span>
+                                    <span class="ourproduct-item__cart-price--new">
+                                       @string.Format("{0:#,#.}",item.Price - (item.Price*item.Discount)/100)đ
+                                    </span>
+                                </span>
+                                <span class="ourproduct-item__cart-shopping">
+                                    <a onclick="JSalert()" id="addcart1" data-id="@item.Id"><i class="fa-solid fa-bag-shopping"></i></a>
+                                </span>
+                            </div>
+                            <div class="ourproduct-item__detail--label">
+                                <span>-@item.Discount%</span>
+                                <span>New</span>
+                            </div>
+                        </div>
+                    </div>
+                        
+                    }
+                    
+                    <!-- End -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End container -->

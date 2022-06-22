@@ -1,0 +1,211 @@
+﻿@{
+    ViewBag.Title = "Home";
+}
+
+<!-- Begin container -->
+<div class="container">
+
+    <div class="slider">
+        <div class="owl-carousel owl-theme">
+            <div class="item">
+                <img src="./assest/img/Slide/e8a648f422f734e7eb8f5538c37112bed21f13f8_1_4.jpg" alt="">
+                <div class="slider-content">
+                    <h4>BLACK FRIDAY SALE !</h4>
+                    <p>HANDMADE PIZZA UP TO 50% OFF</p>
+                    <button>SHOP NOW</button>
+                </div>
+            </div>
+            <div class="item">
+                <img src="./assest/img/Slide/ad83836d472aed415c9fc32daeefd0170ef68c72_2_4.jpg" alt="">
+                <div class="slider-content slider-content2">
+                    <h4>BLACK FRIDAY SALE !</h4>
+                    <p>HANDMADE PIZZA UP TO 50% OFF</p>
+                    <button>SHOP NOW</button>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            $(document).ready(function() {
+
+
+
+            });
+        </script>
+    </div>
+
+
+    <div class="advertising">
+        <div class="advertising__box1">
+            <div class="row">
+                <div class="col-4 advertising__box--hover">
+                    <img src="./assest/img/QC/1_4.jpg" alt="" class="advertising__box1-left">
+                </div>
+                <div class="col-8 advertising__box--hover">
+                    <img src="./assest/img/QC/2_4.jpg" alt="" class="advrtising__box1-right">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="ourproduct">
+        <div class="ourproduct-title">
+            <h2>Sản Phẩm Hot</h2>
+            <img src="./assest/img/Icon/restaurants-500x500px.png" alt="" class="ourproduct-title-img">
+        </div>
+        <div class="ourproduct-thumb">
+            <div class="ourproduct-thumb--1 actived" id="products-find" data-id="18">
+                <img src="./assest/img/Product/Our product/1.jpg" alt="">
+                <p>COOKIES</p>
+            </div>
+            <div class="ourproduct-thumb--2" id="products-find" data-id="19">
+                <img src="./assest/img/Product/Our product/2.jpg" alt="">
+                <p>CAKE</p>
+            </div>
+            <div class="ourproduct-thumb--3" id="products-find" data-id="20">
+                <img src="./assest/img/Product/Our product/3.jpg" alt="">
+                <p>PIZZA</p>
+            </div>
+        </div>
+
+        <div class="ourproduct-item row-item">
+
+            @*san pham duoc them bang ajax tai day*@
+
+
+        </div>
+
+    </div>
+
+    <div class="advertising">
+        <div class="advertising__box2">
+            <div class="row">
+                <div class="col-8 advertising__box--hover">
+                    <img src="./assest/img/QC/3_4.jpg" alt="" class="advertising__box2-left">
+                </div>
+                <div class="col-4 advertising__box--hover">
+                    <img src="./assest/img/QC/4_4.jpg" alt="" class="advrtising__box2-right">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="latestblog">
+        <div class="latestblog-tile">
+            <h2>Tin Tức</h2>
+            <img src="./assest/img/Icon/restaurants-500x500px.png" alt="" class="latestblog-img">
+        </div>
+        <div class="latestblog-item row-item">
+            @foreach (var item in ViewBag.NewsHot)
+            {
+                <div class="col-3">
+                    <div class="latestblog-item__box">
+                    <a href="/News/Detail/@item.Id"><img src="~/Upload/News/@item.Photo" alt=""></a>
+                        <div class="latestblog-item__type">
+                            <p>fastfood</p>
+                        </div>
+                        <div class="latestblog-item__title">
+                        <a href="/News/Detail/@item.Id" style="text-decoration: none;"><p>@item.Name</p></a>
+                        </div>
+                        <button class="latestblog-item__btn">
+                            <a href="/News/Detail/@item.Id" style="color:black; text-decoration:none">Chi tiết</a>
+                        </button>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+<div id="asfgsd"></div>
+<!-- End container -->
+
+<script>
+    $(document).ready(function() {
+
+
+        LoadData(18);
+        $('body').on('click', '#products-find', function() {
+            $(this).toggleClass('actived').siblings().removeClass('actived');
+            var _id = $(this).data('id');
+            LoadData(_id);
+        });
+
+        $('body').on('click', '#addcart1', function() {
+            var _id = $(this).data('id');
+            var model = {
+                Id: _id,
+                Quantity: 1
+            };
+            LoadDataa(model);
+        });
+
+
+        function LoadData(id) {
+            $.ajax({
+                url: '/Home/GetData',
+                type: 'GET',
+                dataType: 'json',
+                data: { id: id },
+                success: function(res) {
+                    var html = "";
+                    var item = res.value;
+                    for (var i = 0; i < item.length; i++) {
+                        html += `<div class="col-3">
+                                                        <div class="ourproduct-item__detail">
+                                                        <a href="/Products/Detail/${item[i].id}"><img src="Upload/Products/${item[i].photo}" alt=""></a>
+                                                        <div class="ourproduct-item__star">
+                                                            <a href="/Products/Star/${item[i].id}?star=1"><i class="fa-solid fa-star"></i></a>
+                                                            <a href="/Products/Star/${item[i].id}?star=2"><i class="fa-solid fa-star"></i></a>
+                                                            <a href="/Products/Star/${item[i].id}?star=3"><i class="fa-solid fa-star"></i></a>
+                                                            <a href="/Products/Star/${item[i].id}?star=4"><i class="fa-solid fa-star"></i></a>
+                                                            <a href="/Products/Star/${item[i].id}?star=5"><i class="fa-solid fa-star"></i></a>
+                                                        </div>
+                                                        <div class="ourproduct-item__name">
+                                                            <a href="/Products/Detail/${item[i].id}"><h4>${item[i].name}</h4></a>
+                                                        </div>
+                                                        <div class="ourproduct-item__info">
+                                                            <p>${item[i].description}</p>
+                                                        </div>
+                                                        <div class="ourproduct-item__cart">
+                                                            <span class="ourproduct-item__cart-price">
+                                                                <span class="ourproduct-item__cart-price--old">
+                                                                ${new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(item[i].price)}
+                                                                </span>
+                                                                <span class="ourproduct-item__cart-price--new">
+                                                                ${new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(item[i].price - item[i].price * item[i].discount / 100)}
+                                                                </span>
+                                                            </span>
+                                                            <span class="ourproduct-item__cart-shopping">
+                                                                <a onclick="JSalert()" id="addcart1" data-id="${item[i].id}"><i class="fa-solid fa-bag-shopping"></i></a>
+                                                            </span>
+                                                        </div>
+                                                        <div class="ourproduct-item__detail--label">
+                                                            <span>-${item[i].discount}%</span>
+                                                            <span>New</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                    `;
+                    }
+                    $('.ourproduct-item').html(html);
+                }
+            });
+        }
+
+
+        $('.owl-carousel').owlCarousel({
+            loop: true,
+            margin: 10,
+            nav: true,
+            responsive: {
+                0: {
+                    items: 1
+                }
+            },
+            autoplay: true,
+            autoplayTimeout: 2000,
+            autoplayHoverPause: true
+        })
+    });
+</script>
+

@@ -1,0 +1,42 @@
+﻿@{
+    Layout = "_LayoutAdmin";
+}
+
+@model FastFood.Models.ItemUsers
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<h1>Xóa Tài Khoản</h1>
+
+<h4>Bạn chắc muốn xóa tài khoản này?</h4>
+<div>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Email)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Email)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Password)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Password)
+        </dd>
+    </dl>
+    
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="Id" />
+        <input onclick="return window.confirm('Bạn chắc chắn rồi chứ?')" type="submit" value="Xóa" class="btn btn-danger" /> |
+        <a asp-action="Index">Quay lại</a>
+    </form>
+</div>

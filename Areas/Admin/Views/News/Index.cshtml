@@ -1,0 +1,72 @@
+﻿@{
+    Layout = "_LayoutAdmin";
+}
+
+
+@using X.PagedList
+@using X.PagedList.Mvc.Core
+@using System.IO
+@using FastFood.Models
+@using X.PagedList.Web.Common
+@model IPagedList<FastFood.Models.ItemNews>
+
+
+@functions {
+    public FoodDbContext db = new FoodDbContext();
+}
+<div class="col-md-12">
+    <div style="margin-bottom:5px" class="mb-4">
+        <a href="/Admin/News/Create" class="btn btn-primary btn-sm">Add News</a>
+    </div>
+    <div class="panel panel-primary">
+        <div class="panel-heading">List News</div>
+        <div class="panel-body">
+            <table class="table table-bordered table-hover">
+                <tr>
+                    <th style="width:100px;">Photo</th>
+                    <th>Name</th>
+                    <th style="width: 70px;">Hot</th>
+                    <th style="width:100px;"></th>
+                </tr>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @*File.Exist -> kiem tra file co ton tai khong*@
+                            @*Directory.GetCurrentDirectory() -> lay duong dan cua thu muc*@
+                            @if (item.Photo != null && File.Exists(Directory.GetCurrentDirectory() + "\\wwwroot\\Upload\\News\\" + item.Photo))
+                            {
+                                <img src="~/Upload/News/@item.Photo" style="width:100px;">
+                            }
+                        </td>
+                        <td>@item.Name</td>
+                        <td style="text-align: center;">
+                            @if (item.Hot == 1)
+                            {
+                                <text>Hot</text>
+                            }
+                        </td>
+                        <td style="text-align:center;">
+                            <a href="/Admin/News/Update/@item.Id">Edit</a>&nbsp;
+                            <a href="/Admin/News/Delete/@item.Id" onclick="return window.confirm('Are you sure?');">Delete</a>
+                        </td>
+                    </tr>
+                }
+            </table>
+            <style type="text/css">
+                .pagination {
+                    padding: 0px;
+                    margin: 0px;
+                }
+            </style>
+   @Html.PagedListPager(
+    Model, p => Url.Action("Index", new {page = p}),
+    new PagedListRenderOptions 
+    {
+        PageClasses = new string[] { "page-link" },
+        UlElementClasses = new string[] { "pagination" },
+        LiElementClasses = new string[] { "page-item" }
+    })
+        </div>
+    </div>
+</div>

@@ -1,0 +1,29 @@
+﻿ <!-- Begin container -->
+<div class="container loginct">
+    <div class="login">
+        <h2>Đăng nhập</h2>
+        			@if (!String.IsNullOrEmpty(Context.Request.Query["notify"]))
+                {
+                    <div style="color:red;">Email hoặc mật khẩu sai, vui lòng đăng nhập lại !</div>
+                }
+        <form action="/Account/LoginPost" class="login-form" method="post">
+            <div class="login-form-feild">
+                <label for="Email">Email</label>
+                <input type="text" placeholder="Nhập email của bạn tại đây" name="Email" required>
+            </div>
+            <div class="login-form-feild">
+                <label for="Password">Mật khẩu</label>
+                <input type="text" placeholder="Nhập mật khẩu của bạn tại đây" name="Password" required>
+            </div>
+            <div class="cregister">
+                <a href="">Quên mật khẩu</a>
+                <p>Bạn có tài khoản chưa? <span><a href="/Account/Register">Tạo tài khoản</a></span></p>
+            </div>
+            <button type="submit" class="bnt-login">Đăng nhập</button>
+        </form>
+    </div>
+
+
+</div>
+
+<!-- End container -->

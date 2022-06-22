@@ -1,0 +1,42 @@
+﻿@{
+    Layout = "_LayoutAdmin";
+}
+
+@model FastFood.Models.ItemUsers
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>ItemUsers</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Email" class="control-label"></label>
+                <input type="email" value="@Model.Email" name="email" class="form-control" required style = "background-color: #e9ecef!important;" disabled>
+            </div>
+            <div class="form-group">
+                <label asp-for="Password" class="control-label"></label>
+                <input name="Password" placeholder="Không đổi password thì không nhập" class="form-control" >
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Lưu" class="btn btn-primary btn-sm" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Quay lại</a>
+</div>

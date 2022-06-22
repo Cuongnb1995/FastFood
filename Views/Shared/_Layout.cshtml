@@ -1,0 +1,235 @@
+﻿@using FastFood.Models
+@functions {
+    public FoodDbContext db = new FoodDbContext();
+    public List<Categories> Categories()
+    {
+        List<Categories> _ListRecord = db.categories.Where(item => item.ParentId == 0).ToList();
+        return _ListRecord;
+    }
+    public List<Categories> CategoriesSub(int _CategoryId)
+    {
+        List<Categories> _ListRecord = db.categories.Where(item => item.ParentId == _CategoryId).ToList();
+        return _ListRecord;
+    }
+}
+
+@{
+    List<Item> _cart = Cart.GetCart(Context.Session);
+    int intSoLuongSanPham = 0;
+    if (_cart != null)
+        foreach (var item in _cart)
+        {
+
+            intSoLuongSanPham += item.Quantity;
+        }
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="~/assest/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <title>@ViewBag.Title</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <link rel="stylesheet" href="~/assest/owlcarousel/assets/owl.carousel.min.css">
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <link rel="stylesheet" href="~/assest/owlcarousel/assets/owl.theme.default.min.css">
+</head>
+<body>
+    <!-- Begin header -->
+    <header class="header">
+        <div class="header-top">
+            <div class="header-social">
+                <ul>
+                    <li><a href=""><i class="fa-brands fa-facebook-f"></i></a></li>
+                    <li><a href=""><i class="fa-brands fa-twitter"></i></a></li>
+                    <li><a href=""><i class="fa-brands fa-youtube"></i></a></li>
+                    <li><a href=""><i class="fa-brands fa-google-plus-g"></i></a></li>
+                    <li><a href=""><i class="fa-brands fa-instagram"></i></a></li>
+                </ul>
+            </div>
+            <div class="hearder-info">
+                <ul>
+                    @if (Context.Session.GetString("customer_email") != null)
+                    {
+                        <li style="color:white;">Xin chào @Context.Session.GetString("customer_email")</li>
+                        <span style="color: white;">|</span>
+                        <li><a href="/Account/Logout">Đăng xuất</a></li>
+                    }
+                    else
+                    {
+                        <li><a href="/Account/Login">Đăng nhập</a></li>
+                        <span style="color: white;">|</span>
+                        <li><a href="/Account/Register">Đăng ký</a></li>
+                    }
+                </ul>
+            </div>
+        </div>
+
+        <div class="header-nav">
+            <div class="nav-logo"><a href="/Home"><img src="~/assest/img/Logo/ecolife-fastfood4-logo-16152722134.jpg" alt=""></a> </div>
+            <div class="nav-menu">
+                <ul>
+                    <li><a href="/Home" class="@Html.Raw(ViewBag.Title == "Home" ? "menu--atived" : "")" id="menuactive">Home</a></li>
+                    @{
+                        List<Categories> _ListCategories = Categories();
+                    }
+                    @foreach (var item in _ListCategories)
+                    {
+                        <li>
+                            <a href="/Products/Category/@item.Id" class="@Html.Raw(ViewBag.Title == item.Name ? "menu--atived" : "")">@item.Name </a>
+                            @{
+                                List<Categories> _ListCategoriesSub = CategoriesSub(item.Id);
+                            }
+                            <div class="menu-sub">
+                                @foreach (Categories itemSub in _ListCategoriesSub)
+                                {
+                                    <ul>
+                                        <li><a href="/Products/Category/@itemSub.Id">@itemSub.Name</a></li>
+                                    </ul>
+                                }
+                            </div>
+                        </li>
+                    }
+                    <li><a href="/News" class="@Html.Raw(ViewBag.Title == "News" ? "menu--atived" : "")">Tin Tức</a></li>
+                    <li><a href="/Home/About" class="@Html.Raw(ViewBag.Title == "About" ? "menu--atived" : "")">About us</a></li>
+                </ul>
+            </div>
+            <div class="nav-contact">
+                <div class="nav-contact__img"><img src="~/assest/img/Icon/contact.png" alt=""></div>
+                <div class="nav-contact__info">
+                    <p>Số điện thoại:</p>
+                    <p class="nav-contact__info--mobi">(037) 369 3485 </p>
+                </div>
+            </div>
+            <div class="nav-searchcart">
+                <ul>
+                    <li style="position: relative;">
+                        <input class="input_search" />
+                        <a class="input_search__a" style="position: absolute;"><i class="fa-solid fa-magnifying-glass"></i></a>
+                    </li>
+                    @*                    <li><a href=""><i class="fa-regular fa-heart"></i></a></li>
+                    *@
+                    <li><a href="/Cart/Index"><i class="fa-solid fa-bag-shopping"></i><span id="tien">@intSoLuongSanPham</span></a></li>
+                </ul>
+
+            </div>
+        </div>
+    </header>
+    <!-- End header -->
+    @RenderBody()
+
+    <!-- Begin Footer -->
+    <footer>
+        <div class="footer">
+            <div class="footer-box1">
+                <div class="row-item">
+                    <div class="box1-time col-3">
+                        <h3>OPENING HOURS</h3>
+                        <p>Monday – Friday: 8am – 4pm</p>
+                        <p>Saturday: 9am – 5pm</p>
+                        <div class="box1-time__social">
+                            <ul>
+                                <li><a href=""><i class="fa-brands fa-facebook-f"></i></a></li>
+                                <li><a href=""><i class="fa-brands fa-twitter"></i></a></li>
+                                <li><a href=""><i class="fa-brands fa-youtube"></i></a></li>
+                                <li><a href=""><i class="fa-brands fa-google-plus-g"></i></a></li>
+                                <li><a href=""><i class="fa-brands fa-instagram"></i></a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="box1-info col-3">
+                        <h3>INFORMATION</h3>
+                        <ul>
+                            <li><a href="">Delivery</a></li>
+                            <li><a href="">About us</a></li>
+                            <li><a href="">Secure Payment</a></li>
+                            <li><a href="">Contact us</a></li>
+                            <li><a href="">Site map</a></li>
+                        </ul>
+                    </div>
+                    <div class="box1-customlinks col-3">
+                        <h3>CUSTOM LINKS</h3>
+                        <ul>
+                            <li><a href="">legal notice</a></li>
+                            <li><a href="">prices drop</a></li>
+                            <li><a href="">new products</a></li>
+                            <li><a href="">best sales</a></li>
+                            <li><a href="">Login</a></li>
+                        </ul>
+                    </div>
+                    <div class="box1-newsletter col-3">
+                        <h3>newsletter</h3>
+                        <p>Be the first to know about our new arrivals and exclusive offers.</p>
+                        <div class="box1-newsletter__input">
+                            <input type="email" name="" id="" placeholder="You email address">
+                            <button class="box1-newsletter__input--btn">Sign up</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="footer2">
+            <p>Copyright © CuongNB. All Rights Reserved</p>
+        </div>
+    </footer>
+    <!-- End footer -->
+    <script src="~/assest/js/jquery.min.js"></script>
+    <script src="~/assest/owlcarousel/owl.carousel.min.js"></script>
+    <script src="~/assest/js/mainjquery1.js"></script>
+
+
+    <script>
+
+        $('body').on('click', '#addcart1', function() {
+            console.log('123');
+            var _id = $(this).data('id');
+            var model = {
+                Id: _id,
+                Quantity: 1
+            };
+            LoadDataa(model);
+        });
+
+
+        function LoadDataa(model) {
+            $.ajax({
+                url: '/Cart/Buy',
+                type: 'POST',
+                dataType: 'json',
+                data: model,
+                success: function(res) {
+                    var html = "";
+                    var item = res.value;
+                    $('#tien').html(sumArray(item.soluong));
+                    console.log(sumArray(item.soluong));
+                }
+            });
+        }
+
+        function sumArray(mang) {
+            let sum = 0;
+            let i = 0;
+            while (i < mang.length) {
+                sum += mang[i];
+                i++;
+            }
+            return sum;
+        }
+        function JSalert() {
+            swal("Cảm ơn bạn!", ", Thêm sản phẩm thành công!", "success", { buttons: false, timer: 1500 });
+        }
+
+        $('body').on('click', '.input_search__a', function() {
+            $('.input_search').toggleClass('nav-searchcart-clicked');
+            $(this).toggleClass('searchcart-clicked-color');
+        });
+
+    </script>
+</body>
+</html>
+
+

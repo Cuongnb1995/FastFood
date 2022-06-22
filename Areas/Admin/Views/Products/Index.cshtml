@@ -1,0 +1,82 @@
+﻿@{
+    Layout = "_LayoutAdmin";
+}
+
+@using X.PagedList
+@using X.PagedList.Mvc.Core
+@using FastFood.Models
+@using System.IO
+@using System.Collections.Generic
+@using X.PagedList.Web.Common
+@model IPagedList<ItemProducts>
+
+@functions {
+    public FoodDbContext db = new FoodDbContext();
+    public string GetCategory(int _CategoryId)
+    {
+        Categories record = db.categories.Where(i => i.Id == _CategoryId).FirstOrDefault();
+        return record.Name != null ? record.Name : "";
+    }
+}
+
+<div class="col-md-12">
+    <div style="margin-bottom:5px;" class="mb-4">
+        <a href="/Admin/Products/Create" class="btn btn-primary btn-sm">Add Products</a>
+    </div>
+    <div class="panel panel-primary">
+        <div class="panel-heading">List Products</div>
+        <div class="panel-body">
+            <table class="table table-bordered table-hover">
+                <tr>
+                    <th style="width:100px;">Photo</th>
+                    <th>Name</th>
+                    <th style="width: 200px;">Category</th>
+                    <th style="width: 70px;">Discount</th>
+                    <th style="width: 70px;">Hot</th>
+                    <th style="width:100px;"></th>
+                </tr>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@if (item.Photo != null && File.Exists(Directory.GetCurrentDirectory() + "\\wwwroot\\Upload\\Products\\" + item.Photo))
+                            {
+                                <img src="~/Upload/Products/@item.Photo" style="width:100px">
+                            } </td>
+                        <td>@item.Name</td>
+                        <td>@GetCategory(item.CategoryId)</td>
+                        <td style="text-align: center;">@item.Discount</td>
+                        <td style="text-align: center;">
+                            @if (item.Hot == 1)
+                            {
+                                <text>Hot</text>
+                            }
+
+                        </td>
+                        <td style="text-align:center;">
+                            <a href="/Admin/Products/Update/@item.Id">Edit</a>&nbsp;
+                            <a href="/Admin/Products/Delete/@item.Id" onclick="return window.confirm('Are you sure?');">Delete</a>
+                        </td>
+                    </tr>
+                }
+
+
+            </table>
+            <style type="text/css">
+                .pagination {
+                    padding: 0px;
+                    margin: 0px;
+                }
+            </style>
+
+            @Html.PagedListPager(
+            Model, p => Url.Action("Index", new {page = p}),
+            new PagedListRenderOptions
+            {
+            PageClasses = new string[] { "page-link" },
+            UlElementClasses = new string[] { "pagination" },
+            LiElementClasses = new string[] { "page-item" }
+            }
+            )
+        </div>
+    </div>
+</div>

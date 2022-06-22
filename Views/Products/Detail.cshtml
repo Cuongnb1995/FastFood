@@ -1,0 +1,271 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@model FastFood.Models.ItemProducts
+
+@functions {
+    public FoodDbContext db = new FoodDbContext();
+    public List<Categories> Categories()
+    {
+        List<Categories> _ListRecord = db.categories.Where(item => item.ParentId == 0).ToList();
+        return _ListRecord;
+    }
+    public List<Categories> CategoriesSub(int _CategoryId)
+    {
+        List<Categories> _ListRecord = db.categories.Where(item => item.ParentId == _CategoryId).ToList();
+        return _ListRecord;
+    }
+    public string Name(int _CategoryId)
+    {
+        string _Record = db.categories.Where(item => item.Id == _CategoryId).Select(i => i.Name).FirstOrDefault();
+        return _Record;
+    }
+    public int Start(int _productId, int _star)
+    {
+        int _Record = db.Ratings.Where(item => item.Star == _star && item.ProductId == _productId).Count();
+        return _Record;
+    }
+}
+
+@{
+    int _CategoryId = Convert.ToInt32(ViewBag.CategoryId.Id);
+    string strOrder = !String.IsNullOrEmpty(Context.Request.Query["order"]) ? Context.Request.Query["order"] : "";
+}
+
+<!-- Begin container -->
+<div class="container">
+    <div class="pagination">
+        <h2>@ViewBag.CategoryId.Name.ToUpper()</h2>
+        <span>Home</span><span>  >   </span><span><a href="">@ViewBag.CategoryId.Name</a></span>
+    </div>
+    <div class="row_0">
+
+        <div class="cookies col-3_1">
+            <div class="sidebar">
+                <h3>Danh Mục Sản Phẩm</h3>
+                <ul>
+                    @{
+                        List<Categories> _ListCategories = Categories();
+                    }
+                    @foreach (var item in _ListCategories)
+                    {
+                        <li style="font-weight:bold" class="@Html.Raw(ViewBag.CategoryId.Id == item.Id ? "actived_category" : "")">
+                            <a href="/Products/Category/@item.Id">@item.Name</a>
+                            @{
+                                List<Categories> _ListCategoriesSub = CategoriesSub(item.Id);
+                            }
+                            @foreach (Categories itemSub in _ListCategoriesSub)
+                            {
+                            <li class="@Html.Raw(ViewBag.CategoryId.Id == itemSub.Id ? "actived_category" : "")" style="margin-left:10px"><a href="/Products/Category/@itemSub.Id">@itemSub.Name</a></li>
+                            }
+                        </li>
+                    }
+
+                </ul>
+
+                <h3 style="margin-top:40px;">Giá</h3>
+                <div class="cookies-price">
+                    <input type="checkbox" name="" id="">
+                    <label for="">0 ₫ - 600.000 ₫</label>
+                </div>
+                <div class="cookies-price">
+                    <input type="checkbox" name="" id="">
+                    <label for="">600.000 ₫ - 1.500.000 ₫</label>
+                </div>
+                <div class="cookies-price">
+                    <input type="checkbox" name="" id="">
+                    <label for="">1.500.000 ₫ - 3.000.000 ₫</label>
+                </div>
+                <div class="cookies-price">
+                    <input type="checkbox" name="" id="">
+                    <label for="">3.000.000 ₫ - 6.000.000 ₫</label>
+                </div>
+
+            </div>
+        </div>
+        <div class="col-9">
+
+            <!-- main -->
+            <!-- <div class="product-detail" itemscope itemtype="http://schema.org/Product"> -->
+            <div class="top" style="margin-top:62px">
+                <div class="row">
+                    <div class="col-4 product-image" style="margin-top: -38px;">
+                        <div class="featured-image">
+                            <img src="~/Upload/Products/@Model.Photo" style="width: 100%;" class="img-responsive" />
+                        </div>
+                        <div class="box-image">
+                            <ul>
+                                <li><img src="~/Upload/Products/@Model.Photo" id="img-1"></li>
+                                <li><img src="~/Upload/Products/@Model.Photo" id="img-2"></li>
+                                <li><img src="~/Upload/Products/@Model.Photo" id="img-3"></li>
+                                <li><img src="~/Upload/Products/@Model.Photo" id="img-4"></li>
+                                <li><img src="~/Upload/Products/@Model.Photo" id="img-5"></li>
+                            </ul>
+                        </div>
+                        <script type="text/javascript">
+                            $(document).ready(function() {
+                                //---
+                                $("#img-1").click(function() {
+                                    $(".featured-image img").fadeOut(function() {
+                                        //lay duong dan cua id=img-1
+                                        var srcImg = $("#img-1").attr("src");
+                                        $(".featured-image img").attr("src", srcImg);
+                                        $(".featured-image img").fadeIn();
+                                    });
+                                });
+                                //---
+                                //---
+                                $("#img-2").click(function() {
+                                    $(".featured-image img").fadeOut(function() {
+                                        //lay duong dan cua id=img-2
+                                        var srcImg = $("#img-2").attr("src");
+                                        $(".featured-image img").attr("src", srcImg);
+                                        $(".featured-image img").fadeIn();
+                                    });
+                                });
+                                //---
+                                //---
+                                $("#img-3").click(function() {
+                                    $(".featured-image img").fadeOut(function() {
+                                        //lay duong dan cua id=img-3
+                                        var srcImg = $("#img-3").attr("src");
+                                        $(".featured-image img").attr("src", srcImg);
+                                        $(".featured-image img").fadeIn();
+                                    });
+                                });
+                                //---
+                                //---
+                                $("#img-4").click(function() {
+                                    $(".featured-image img").fadeOut(function() {
+                                        //lay duong dan cua id=img-4
+                                        var srcImg = $("#img-4").attr("src");
+                                        $(".featured-image img").attr("src", srcImg);
+                                        $(".featured-image img").fadeIn();
+                                    });
+                                });
+                                //---
+                                //---
+                                $("#img-5").click(function() {
+                                    $(".featured-image img").fadeOut(function() {
+                                        //lay duong dan cua id=img-5
+                                        var srcImg = $("#img-5").attr("src");
+                                        $(".featured-image img").attr("src", srcImg);
+                                        $(".featured-image img").fadeIn();
+                                    });
+                                });
+                                //---
+
+                            });
+                        </script>
+                        <style type="text/css">
+                            .box-image ul {
+                                padding: 0px;
+                                margin: 0px;
+                                list-style: none;
+                            }
+
+                                .box-image ul li {
+                                    display: inline;
+                                    margin-right: 10px;
+                                    ;
+                                }
+
+                            .box-image img {
+                                width: 58px;
+                                border: 1px solid #dddddd;
+                                margin-bottom: 10px;
+                                cursor: pointer;
+                            }
+                        </style>
+                    </div>
+                    <div class="col-6 info">
+                        <h1 style="margin-bottom:20px">@Model.Name</h1>
+                        <p style="margin-bottom:10px"> Category:&nbsp; <span> @Name(Model.CategoryId) </span></p>
+                        <span class="ourproduct-item__cart-price--old">
+                            @string.Format("{0:#,#.}",@Model.Price)đ
+                        </span>
+                        <span class="ourproduct-item__cart-price--new">
+                            @string.Format("{0:#,#.}",Model.Price - (Model.Price*Model.Discount)/100)đ
+                        </span>
+                        <div class="cart-detail__input" style="margin-top: 20px;">
+                            <button class="add">+</button>
+                            <input type="number" name="" id="input_price" value="1">
+                            <button class="mute">-</button>
+                        </div>
+                        <div class="continueShopping">
+                            <button onclick="JSalert()" id="addcart" data-id="@Model.Id"><a>Thêm Vào Giỏ Hàng </a></button>
+                        </div>
+                        <!-- rating -->
+                        <div style="border:1px solid #dddddd; margin-top: 20px; padding:6px;">
+                            <h4 style="padding: 10px 10px;">Rating</h4>
+                            <table style="width: 100%;" class="rating-color">
+                                <tr>
+                                    <td style="width: 80%; padding: 2px 10px;"><i class="fa-solid fa-star"></i></td>
+                                    <td><span class="label label-primary">@Start(Model.Id, 1) vote</span></td>
+                                </tr>
+                                <tr>
+                                    <td style="width: 80%;padding: 2px 10px;">
+                                        <i class="fa-solid fa-star"></i>
+                                        <i class="fa-solid fa-star"></i>
+                                    <td><span class="label label-warning">@Start(Model.Id, 2) vote</span></td>
+                                </tr>
+                                <tr>
+                                    <td style="width: 80%;padding: 2px 10px;">
+                                        <i class="fa-solid fa-star"></i>
+                                        <i class="fa-solid fa-star"></i>
+                                        <i class="fa-solid fa-star"></i>
+                                    <td><span class="label label-warning">@Start(Model.Id, 3) vote</span></td>
+                                </tr>
+                                <tr>
+                                    <td style="width: 80%; padding: 2px 10px;">
+                                        <i class="fa-solid fa-star"></i>
+                                        <i class="fa-solid fa-star"></i>
+                                        <i class="fa-solid fa-star"></i>
+                                        <i class="fa-solid fa-star"></i>
+                                    <td><span class="label label-warning">@Start(Model.Id, 4) vote</span></td>
+                                </tr>
+                                <tr>
+                                    <td style="width: 80%; padding: 2px 10px;">
+                                        <i class="fa-solid fa-star"></i>
+                                        <i class="fa-solid fa-star"></i>
+                                        <i class="fa-solid fa-star"></i>
+                                        <i class="fa-solid fa-star"></i>
+                                        <i class="fa-solid fa-star"></i>
+                                    <td><span class="label label-warning">@Start(Model.Id, 5) vote</span></td>
+                                </tr>
+                            </table>
+                            <br>
+                        </div>
+                        <!-- /rating -->
+                    </div>
+                </div>
+            </div>
+            <div class="middle" style="margin: 0px 0px 80px;">
+                <!-- chi tiet -->
+                <h2 style="padding:10px 0px 20px;">@Html.Raw(Model.Description)</h2>
+                @Html.Raw(Model.Content)
+                <!-- chi tiet -->
+            </div>
+            <!-- end main -->
+            <script>
+
+
+
+                $('body').off("click").on('click', '#addcart', function() {
+                    console.log("1234");
+                    var _id = $(this).data('id');
+                    var _quantity = $('#input_price').val();
+                    var model = {
+                        Id: _id,
+                        Quantity: _quantity
+                    };
+                    LoadDataa(model);
+                });
+
+            </script>
+
+
+        </div>
+    </div>
+</div>
+<!-- End container -->

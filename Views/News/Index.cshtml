@@ -1,0 +1,45 @@
+﻿@using X.PagedList.Mvc.Core
+@using X.PagedList
+@using X.PagedList.Web.Common
+@model IPagedList<FastFood.Models.ItemNews>
+
+
+<div class="container">
+    <div class="pagination">
+        <h2>TIN TỨC</h2>
+        <span>Home</span><span>  >   </span><span><a href="">Tin Tức</a></span>
+    </div>
+    <div class="latestblog-item row-item" style="margin: 20px -15px; gap: 20px; justify-content: flex-start;">
+        @foreach (var item in Model)
+        {
+            <div class="col-4 news-col">
+                <div class="latestblog-item__box">
+                    <a href="/News/Detail/@item.Id"><img src="~/Upload/News/@item.Photo" alt=""></a>
+                    <div class="latestblog-item__type">
+                        <p>fastfood</p>
+                    </div>
+                    <div class="latestblog-item__title">
+                        <a href="/News/Detail/@item.Id" style="text-decoration: none;"><p>@item.Name</p></a>
+                    </div>
+                    <div class="ourproduct-item__info">
+                        <p>@Html.Raw(item.Description)</p>
+                    </div>
+                    <div class="continueShopping">
+                        <a href="/News/Detail/@item.Id"><button style="width:100%; color:white;">Chi tiết</button></a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+@Html.PagedListPager(
+    Model, p => Url.Action("Index", new {page = p}),
+    new PagedListRenderOptions 
+    {
+        PageClasses = new string[] { "page-link-c" },
+        UlElementClasses = new string[] { "pagination-c" },
+        LiElementClasses = new string[] { "page-item2-c" }
+    }
+)
+
+
