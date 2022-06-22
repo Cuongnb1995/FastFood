@@ -110,9 +110,17 @@
                     <li style="position: relative;">
                         <input class="input_search" />
                         <a class="input_search__a" style="position: absolute;"><i class="fa-solid fa-magnifying-glass"></i></a>
+
+                        <div class="search-items">
+                            @*<div class="search-item">
+                            <img src="./assest/img/Product/Product item/2.jpg" width="50px" />
+                            <p style="font-weight:none;">San pham hot</p>
+                            </div>*@
+
+                        </div>
                     </li>
-                    @*                    <li><a href=""><i class="fa-regular fa-heart"></i></a></li>
-                    *@
+
+
                     <li><a href="/Cart/Index"><i class="fa-solid fa-bag-shopping"></i><span id="tien">@intSoLuongSanPham</span></a></li>
                 </ul>
 
@@ -202,13 +210,12 @@
                 dataType: 'json',
                 data: model,
                 success: function(res) {
-                    var html = "";
                     var item = res.value;
                     $('#tien').html(sumArray(item.soluong));
                     console.log(sumArray(item.soluong));
                 }
             });
-        }
+        };
 
         function sumArray(mang) {
             let sum = 0;
@@ -223,10 +230,44 @@
             swal("Cảm ơn bạn!", ", Thêm sản phẩm thành công!", "success", { buttons: false, timer: 1500 });
         }
 
+
         $('body').on('click', '.input_search__a', function() {
             $('.input_search').toggleClass('nav-searchcart-clicked');
             $(this).toggleClass('searchcart-clicked-color');
         });
+
+
+
+        $(document).ready(function() {
+            $('.input_search').keyup(function() {
+                var key = $(".input_search").val();
+                if (key != "") {
+                    $('.search-items').attr("style", "display: block;");
+
+                    $.get("/SearchProducts/Search?key=" + key, function(result) {
+                        var html = "";
+                        var item = result.value;
+                        if (item.length == 0) { $('.search-items').attr("style", "display: none;"); }
+                        for (var i = 0; i < item.length; i++) {
+                            html +=
+                                `<a href="/Products/Detail/${item[i].id}" class="search-item">
+                                                                <img src="/Upload/Products/${item[i].photo}" width="50px" />
+                                                                <p style="font-weight:none;">${item[i].name}</p>
+                                                        </a>`;
+                        }
+
+                        $(".search-items").empty();
+                        $(".search-items").append(html);
+                    });
+                }
+                else { $(".search-items").attr("style", "display:none;"); };
+            });
+        });
+
+        function search() {
+            var key = $(".input_search").val();
+            location.href = "/SearchProducts/Search?key=" + key;
+        }
 
     </script>
 </body>
