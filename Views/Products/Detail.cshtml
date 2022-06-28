@@ -63,22 +63,21 @@
 
                 </ul>
 
-                <h3 style="margin-top:40px;">Giá</h3>
+                <h3 style="margin-top:40px;">Khoảng Giá</h3>
                 <div class="cookies-price">
-                    <input type="checkbox" name="" id="">
-                    <label for="">0 ₫ - 600.000 ₫</label>
-                </div>
-                <div class="cookies-price">
-                    <input type="checkbox" name="" id="">
-                    <label for="">600.000 ₫ - 1.500.000 ₫</label>
-                </div>
-                <div class="cookies-price">
-                    <input type="checkbox" name="" id="">
-                    <label for="">1.500.000 ₫ - 3.000.000 ₫</label>
-                </div>
-                <div class="cookies-price">
-                    <input type="checkbox" name="" id="">
-                    <label for="">3.000.000 ₫ - 6.000.000 ₫</label>
+                      <ul class="list-group" style="border:0px;">
+                        <li class="list-group-item" style="border:0px;">
+                            Giá từ &nbsp;&nbsp;
+                            <input type="number" min="0" value="" id="fromPrice" class="form-control" />
+                        </li>
+                        <li class="list-group-item" style="border:0px;">
+                            Đến &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            <input type="number" min="0" value="" id="toPrice" class="form-control" />
+                        </li>
+                        <li class="list-group-item" style="border:0px; text-align:center">
+                            <input type="button" class="btn-find-price" value="Tìm mức giá" onclick="location.href = '/SearchProducts/SearchPrice?fromPrice=' + document.getElementById('fromPrice').value + '&toPrice=' + document.getElementById('toPrice').value;" />
+                        </li>
+                    </ul>
                 </div>
 
             </div>

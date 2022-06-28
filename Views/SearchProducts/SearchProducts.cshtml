@@ -1,7 +1,11 @@
-﻿@{
+﻿@using X.PagedList.Mvc.Core
+@using X.PagedList
+@using X.PagedList.Web.Common
+
+@{
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-@model IEnumerable<FastFood.Models.ItemProducts>
+@model IPagedList<FastFood.Models.ItemProducts>
 
 @functions {
     public FoodDbContext db = new FoodDbContext();
@@ -17,16 +21,12 @@
     }
 }
 
-@{
-    int _CategoryId = Convert.ToInt32(ViewBag.CategoryId.Id);
-    string strOrder = !String.IsNullOrEmpty(Context.Request.Query["order"]) ? Context.Request.Query["order"] : "";
-}
 
 <!-- Begin container -->
 <div class="container">
     <div class="pagination">
-        <h2>@ViewBag.CategoryId.Name.ToUpper()</h2>
-        <span>Home</span><span>  >   </span><span><a href="">@ViewBag.CategoryId.Name</a></span>
+        <h2>Tìm kiếm</h2>
+        <span>Home</span><span>  >   </span><span><a href="">Kết quả tìm kiếm</a></span>
     </div>
     <div class="row_0">
 
@@ -39,14 +39,14 @@
                     }
                     @foreach (var item in _ListCategories)
                     {
-                        <li style="font-weight:bold" class="@Html.Raw(ViewBag.CategoryId.Id == item.Id ? "actived_category" : "")">
+                        <li style="font-weight:bold">
                             <a href="/Products/Category/@item.Id">@item.Name</a>
                             @{
                                 List<Categories> _ListCategoriesSub = CategoriesSub(item.Id);
                             }
                             @foreach (Categories itemSub in _ListCategoriesSub)
                             {
-                            <li class="@Html.Raw(ViewBag.CategoryId.Id == itemSub.Id ? "actived_category" : "")" style="margin-left:10px"><a href="/Products/Category/@itemSub.Id">@itemSub.Name</a></li>
+                                <li style="margin-left:10px"><a href="/Products/Category/@itemSub.Id">@itemSub.Name</a></li>
                             }
                         </li>
                     }
@@ -69,29 +69,12 @@
                         </li>
                     </ul>
                 </div>
-
             </div>
         </div>
         <div class="col-9">
             <div class="ourproduct-item">
                 <div class="product-sort">
-                    <h3>@ViewBag.CategoryId.Name</h3>
-                    <p>Lọc theo: </p>
-                    <select onchange="location.href = '/Products/Category/@_CategoryId?order='+this.value;">
-                        <!option value="0">Sắp xếp</!option>
-                        <!option @if(strOrder == "priceAsc"){
-                        <text>selected</text>
-                        } value="priceAsc">Giá tăng dần</!option>
-                        <!option @if(strOrder == "priceDesc"){
-                        <text>selected</text>
-                        } value="priceDesc">Giá giảm dần</!option>
-                        <!option @if(strOrder == "nameAsc"){
-                        <text>selected</text>
-                        } value="nameAsc">Sắp xếp A-Z</!option>
-                        <!option @if(strOrder == "nameDesc"){
-                        <text>selected</text>
-                        } value="nameDesc">Sắp xếp Z-A</!option>
-                    </select>
+                    <h3>Kết quả tìm kiếm: @Html.Raw(ViewBag.key!=null?ViewBag.key: string.Format("{0:#,#.}",ViewBag.fromPrice)+"đ" + " - " + string.Format("{0:#,#.}",ViewBag.toPrice) + "đ")</h3>
                 </div>
 
                 <div class="row-item">
@@ -143,3 +126,12 @@
     </div>
 </div>
 <!-- End container -->
+@Html.PagedListPager(
+    Model, p => Url.Action("Index", new {page = p}),
+    new PagedListRenderOptions
+    {
+        PageClasses = new string[] { "page-link-c" },
+        UlElementClasses = new string[] { "pagination-c" },
+        LiElementClasses = new string[] { "page-item2-c" }
+    }
+)

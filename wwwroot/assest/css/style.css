@@ -290,7 +290,7 @@ body {
     display: flex;
     flex-wrap: wrap;
     gap: 10px;
-    justify-content: space-evenly;
+    justify-content: flex-start;
 }
 
 .col-3 {
@@ -677,7 +677,6 @@ body {
         }
 
         .cookies-size:hover label,
-        .cookies-price:hover,
         .sidebar ul li:hover a {
             color: #cf2929;
         }
@@ -691,16 +690,36 @@ body {
     .sidebar h4 {
         padding: 20px 0px;
     }
-
+.cookies-price{
+    padding-right: 40px;
+}
 .cookies-price input {
-    margin-right: 10px;
-    margin-bottom: 10px;
+    margin: 5px 0px 5px;
+    width: 100%;
+    padding: 4px;
 }
+.btn-find-price {
+    text-transform: capitalize;
+    font-weight: 400;
+    font-size: 14px;
+    border: none;
+    line-height: 25px;
+    padding: 5px 20px;
+    border-radius: 5px;
+    background: #253237;
+    margin-top: 20px;
+    color: white;
+}
+    .btn-find-price:hover {
+        background: #cf2929;
+        cursor: pointer;
+    }
 
-.cookies-price {
-    color: #555;
-    line-height: 22px;
-}
+    cookies-price input::-webkit-outer-spin-button,
+    .cookies-price input::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
 
 .cookies-size label,
 .cookies-size input {
@@ -1049,6 +1068,7 @@ body {
     right: 6px;
     font-size: 18px;
     top: 8px;
+    cursor:pointer;
 }
 .nav-searchcart input{
     width: 30px;
@@ -1088,4 +1108,54 @@ body {
 
     .search-item:hover {
         color: #cf2929;
+    }
+
+
+.price-range-slider {
+    width: 100%;
+    float: left;
+    padding: 10px 20px;
+}
+.range-value {
+    margin: 0;
+}
+ #amount
+{
+    width: 100%;
+    background: none;
+    color: #000;
+    font-size: 16px;
+    font-weight: initial;
+    box-shadow: none;
+    border: none;
+    margin: 20px 0 20px 0;
+}
+
+
+.range-bar {
+    border: none;
+    background: #000;
+    height: 3px;
+    width: 96%;
+    margin-left: 8px;
+}
+ .ui-slider-range
+
+{
+    background: #06b9c0;
+}
+
+.ui-slider-handle {
+    border: none;
+    border-radius: 25px;
+    background: #fff;
+    border: 2px solid #06b9c0;
+    height: 17px;
+    width: 17px;
+    top: -0.52em;
+    cursor: pointer;
+}
+
+    .ui-slider-handle + span {
+        background: #06b9c0;
     }

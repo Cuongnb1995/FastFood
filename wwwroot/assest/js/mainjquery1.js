@@ -120,3 +120,4 @@ function addSuccess(value) {
     value.addClass('success');
     value.removeClass('error');
 }
+
