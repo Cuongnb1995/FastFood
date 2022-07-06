@@ -108,9 +108,11 @@ namespace FastFood.Areas.Admin.Controllers
             //cap nhat ban ghi
             db.SaveChanges();
             //--
-            //duyet cac tag
-            List<ItemTags> _ListTags = db.Tags.OrderByDescending(item => item.Id).ToList();
-            foreach (var item in _ListTags)
+
+            var recordTag = db.Tags.ToList();
+            var _productsTags = db.ProductsTags.Where(i => i.ProductId == id).ToList();
+            db.ProductsTags.RemoveRange(_productsTags);
+            foreach (var item in recordTag)
             {
                 string name = "tag_" + item.Id;
                 if (!String.IsNullOrEmpty(Request.Form[name]))
@@ -119,11 +121,10 @@ namespace FastFood.Areas.Admin.Controllers
                     recordProductsTags.ProductId = record.Id;
                     recordProductsTags.TagId = item.Id;
                     db.ProductsTags.Add(recordProductsTags);
-                    db.SaveChanges();
                 }
             }
-            //--
-            //di chuyen den url
+            db.SaveChanges();
+
             return Redirect("/Admin/Products");
             //---
         }
@@ -183,6 +184,21 @@ namespace FastFood.Areas.Admin.Controllers
             }
             //cap nhat ban ghi
             db.Products.Add(record);
+            db.SaveChanges();
+
+
+            var recordTag = db.Tags.ToList();
+            foreach (var item in recordTag)
+            {
+                string name = "tag_" + item.Id;
+                if (!String.IsNullOrEmpty(Request.Form[name]))
+                {
+                    ItemProductsTags recordProductsTags = new ItemProductsTags();
+                    recordProductsTags.ProductId = record.Id;
+                    recordProductsTags.TagId = item.Id;
+                    db.ProductsTags.Add(recordProductsTags);
+                }
+            }
             db.SaveChanges();
             //--
             //di chuyen den url

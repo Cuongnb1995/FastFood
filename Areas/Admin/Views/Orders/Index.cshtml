@@ -1,0 +1,67 @@
+﻿@{
+    Layout = "_LayoutAdmin";
+}
+@using X.PagedList
+@using X.PagedList.Mvc.Core
+@using System.IO
+@using FastFood.Models
+@functions{
+    public FoodDbContext db = new FoodDbContext();
+    public ItemCustomers GetCustomers(int _CustomerId)
+    {
+        //lay mot ban ghi
+        ItemCustomers record = db.Customers.Where(item => item.Id == _CustomerId).FirstOrDefault();
+        return record != null ? record : new ItemCustomers();
+    }
+}
+<div class="col-md-12">
+    <div class="panel panel-primary">
+        <div class="panel-heading">List orders</div>
+        <div class="panel-body">
+            <table class="table table-bordered table-hover">
+                <tr>
+                    <th>Name</th>
+                    <th>Address</th>
+                    <th>Phone</th>
+                    <th>Created</th>
+                    <th>Price</th>
+                    <th>Status</th>
+                    <th>#</th>
+                </tr>
+                @foreach (var item in Model)
+                {
+                    ItemCustomers recordCustomer = GetCustomers(item.CustomerId);
+                    <tr>
+                        <td>@recordCustomer.Name</td>
+                        <td>@recordCustomer.Address</td>
+                        <td>@recordCustomer.Phone</td>
+                        <td>@item.Create.ToString("dd/MM/yyyy")</td>
+                        <td>@string.Format("{0:#,#.}", item.Price)</td>
+                        <td>
+                            @if (item.Status == 2)
+                            {<text><label class="label label-warning">Đã hủy đơn hàng</label></text>}
+                            @if (item.Status == 1)
+                            {<text><label class="label label-danger">Đã giao hàng</label></text>}
+                            @if (item.Status == 0)
+                            {<text><label class="label label-primary">Chưa giao hàng</label></text>}
+                        </td>
+                        <td style="text-align:center;">
+                            @if (item.Status == 0)
+                            {<text><a href="/Admin/Orders/Delivery/@item.Id" style="display:inline-block; text-align:center;">Giao hàng</a></text>}
+                            &nbsp;&nbsp;
+                            <a href="/Admin/Orders/Detail/@item.Id" style="display:inline-block; text-align:center;">Chi tiết</a>
+                        </td>
+                    </tr>
+                }
+            </table>
+            <style type="text/css">
+                .pagination {
+                    padding: 0px;
+                    margin: 0px;
+                }
+            </style>
+            @* ham sau se thuc hien viec hien thi phan trang *@
+            @Html.PagedListPager((IPagedList)Model, p => Url.Action("Index", new { page = p }))
+        </div>
+    </div>
+</div>

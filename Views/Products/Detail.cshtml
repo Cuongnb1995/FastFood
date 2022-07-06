@@ -25,6 +25,11 @@
         int _Record = db.Ratings.Where(item => item.Star == _star && item.ProductId == _productId).Count();
         return _Record;
     }
+    public List<ItemTags> GetTags()
+    {
+        List<ItemTags> _ListTags = db.Tags.ToList();
+        return _ListTags;
+    }
 }
 
 @{
@@ -78,6 +83,17 @@
                             <input type="button" class="btn-find-price" value="Tìm mức giá" onclick="location.href = '/SearchProducts/SearchPrice?fromPrice=' + document.getElementById('fromPrice').value + '&toPrice=' + document.getElementById('toPrice').value;" />
                         </li>
                     </ul>
+                </div>
+
+                <h3 style="margin-top:40px;">Tags</h3>
+                <div class="cookies-price">
+                    @{
+                        List<ItemTags> gettags = GetTags();
+                    }
+                    @foreach (var jitem in gettags)
+                    {
+                        <a class="element-tags" href="/SearchProducts/Tag/@jitem.Id">@jitem.Name</a>
+                    }
                 </div>
 
             </div>

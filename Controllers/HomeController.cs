@@ -17,6 +17,7 @@ namespace FastFood.Controllers
 
         public IActionResult Index()
         {
+            ViewBag.GetAdv = db.Advs.ToList();
             ViewBag.ProductsHot = db.Products.Where(i => i.Hot == 1).Take(8).ToList();
             ViewBag.NewsHot = db.News.Where(i => i.Hot == 1).Take(4).ToList();
             return View();
@@ -34,11 +35,6 @@ namespace FastFood.Controllers
         public IActionResult Contact()
         {
             ViewBag.Title = "Contact";
-            return View();
-        }
-        public IActionResult About()
-        {
-            ViewBag.Title = "About";
             return View();
         }
     }

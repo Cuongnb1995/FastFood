@@ -34,5 +34,13 @@ namespace FastFood.Controllers
             List<ItemProducts> listRecord = db.Products.Where(item => (item.Price - (item.Price * item.Discount) / 100) >= fromPrice && (item.Price - (item.Price * item.Discount) / 100) <= toPrice).OrderByDescending(item => item.Id).ToList();
             return View("SearchProducts", listRecord.ToPagedList(_CurrentPage, _RecordPerPage));
         }
+        public IActionResult Tag(int? id)
+        {
+            var record = db.ProductsTags.Where(i=>i.TagId==id).OrderByDescending(i=>i.Id).Select(i=>i.ProductId).Distinct().ToList();
+            var list = db.Products.Where(i => record.Contains(i.Id)).ToList();
+            ViewBag.PrTags = db.Tags.Find(id);
+            return View(list);
+            
+        }
     }
 }

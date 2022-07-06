@@ -89,7 +89,7 @@
         $('body').on('click', '#addchage', function() {
             var _id = $(this).parents('.cart-detail__input').data('id');
             var _quantity = $(this).parents('.cart-detail__input').find('#input_price').val();
-            var _price = parseFloat($(this).parents('.cart-detail').find('.pricecal').html()) * 1000000;
+            var _price = parseFloat($(this).parents('.cart-detail').find('.pricecal').html())*1000 ;
             var total_item = new Intl.NumberFormat('it-IT').format(_price * _quantity);
             $(this).parents('.cart-detail').find('.total_price-dt').html(total_item);
 
@@ -104,7 +104,7 @@
         $('body').on('click', '#mutechage', function() {
             var _id = $(this).parents('.cart-detail__input').data('id');
             var _quantity = $(this).parents('.cart-detail__input').find('#input_price').val();
-            var _price = parseFloat($(this).parents('.cart-detail').find('.pricecal').html()) * 1000000;
+            var _price = parseFloat($(this).parents('.cart-detail').find('.pricecal').html()) * 1000;
             var total_item = new Intl.NumberFormat('it-IT').format(_price * _quantity);
             $(this).parents('.cart-detail').find('.total_price-dt').html(total_item);
 

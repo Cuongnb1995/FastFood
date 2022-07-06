@@ -7,21 +7,29 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Areas\Admin\Data\**" />
+    <Compile Remove="Areas\Admin\Models\**" />
     <Compile Remove="wwwroot\assest\owlcarousel\dist\**" />
     <Compile Remove="wwwroot\assest\owlcarousel\docs\**" />
     <Compile Remove="wwwroot\assest\owlcarousel\docs_src\**" />
     <Compile Remove="wwwroot\assest\owlcarousel\src\**" />
     <Compile Remove="wwwroot\assest\owlcarousel\test\**" />
+    <Content Remove="Areas\Admin\Data\**" />
+    <Content Remove="Areas\Admin\Models\**" />
     <Content Remove="wwwroot\assest\owlcarousel\dist\**" />
     <Content Remove="wwwroot\assest\owlcarousel\docs\**" />
     <Content Remove="wwwroot\assest\owlcarousel\docs_src\**" />
     <Content Remove="wwwroot\assest\owlcarousel\src\**" />
     <Content Remove="wwwroot\assest\owlcarousel\test\**" />
+    <EmbeddedResource Remove="Areas\Admin\Data\**" />
+    <EmbeddedResource Remove="Areas\Admin\Models\**" />
     <EmbeddedResource Remove="wwwroot\assest\owlcarousel\dist\**" />
     <EmbeddedResource Remove="wwwroot\assest\owlcarousel\docs\**" />
     <EmbeddedResource Remove="wwwroot\assest\owlcarousel\docs_src\**" />
     <EmbeddedResource Remove="wwwroot\assest\owlcarousel\src\**" />
     <EmbeddedResource Remove="wwwroot\assest\owlcarousel\test\**" />
+    <None Remove="Areas\Admin\Data\**" />
+    <None Remove="Areas\Admin\Models\**" />
     <None Remove="wwwroot\assest\owlcarousel\dist\**" />
     <None Remove="wwwroot\assest\owlcarousel\docs\**" />
     <None Remove="wwwroot\assest\owlcarousel\docs_src\**" />
@@ -59,8 +67,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Areas\Admin\Data\" />
-    <Folder Include="Areas\Admin\Models\" />
+    <Folder Include="wwwroot\Upload\Adv\" />
     <Folder Include="wwwroot\Upload\News\" />
     <Folder Include="wwwroot\Upload\Products\" />
   </ItemGroup>

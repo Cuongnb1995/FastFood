@@ -1,0 +1,53 @@
+﻿@{
+    Layout = "_LayoutAdmin";
+}
+
+
+@model IEnumerable<FastFood.Models.ItemAdv>
+
+<div class="col-md-12">
+    <div style="margin-bottom:5px;">
+        <a href="/Admin/Adv/Create" class="btn btn-primary btn-sm">Add adv</a>
+    </div>
+    <div class="panel panel-primary">
+        <div class="panel-heading">List adv</div>
+        <div class="panel-body">
+            <table class="table table-bordered table-hover">
+                <tr>
+                    <th style="width:100px;">Photo</th>
+                    <th>Name</th>
+                    <th style="width:250px;">Position</th>
+                    <th style="width:100px;"></th>
+                </tr>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @if (item.Photo != null && File.Exists(Directory.GetCurrentDirectory() + "\\wwwroot\\Upload\\Adv\\" + item.Photo))
+                            {
+                                <img src="~/Upload/Adv/@item.Photo" style="width:100px;" />
+                            }
+                        </td>
+                        <td>@item.Name</td>
+                        <td>
+                            @if (item.Position == 1) { <text>Ảnh Quảng Cáo 1</text> }
+                            @if (item.Position == 2) { <text>Ảnh Quảng Cáo 2</text> }
+                            @if (item.Position == 3) { <text>Ảnh Quảng Cáo 3</text> }
+                            @if (item.Position == 4) { <text>Ảnh Quảng Cáo 4</text> }
+                        </td>
+                        <td style="text-align:center;">
+                            <a href="/Admin/Adv/Update/@item.Id">Edit</a>&nbsp;
+                            <a href="/Admin/Adv/Delete/@item.Id" onclick="return window.confirm('Are you sure?');">Delete</a>
+                        </td>
+                    </tr>
+                }
+            </table>
+            <style type="text/css">
+                .pagination {
+                    padding: 0px;
+                    margin: 0px;
+                }
+            </style>
+        </div>
+    </div>
+</div>

@@ -1,3 +1,58 @@
-﻿<h1>
-    Trang lien he
-</h1>
+﻿@using X.PagedList.Mvc.Core
+@using X.PagedList
+@using X.PagedList.Web.Common
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<!-- Begin container -->
+<div class="container">
+    <div class="pagination">
+        <h2>Tìm kiếm</h2>
+        <span>Home</span><span>  >   </span><span><a href="">Liên Hệ</a></span>
+    </div>
+    <div style="height:500px; margin: 40px -15px 40px">
+        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d29789.3510395698!2d105.81971156357172!3d21.04593095568559!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3135aafdc1d3eab9%3A0x29ca439485e6f89e!2zUGh1zIkgVMOieSBIw7TMgA!5e0!3m2!1svi!2s!4v1656430381586!5m2!1svi!2s" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+
+    </div>
+
+
+    <div class="contact-form">
+        <form action="" method="post">
+
+            <div class="form-group">
+                <h3>Liên Hệ</h3>
+            </div>
+
+            <div class="contact-form-group">
+                <label class="contact-form-label" for="Email">Địa chỉ Email</label>
+                <input style="width:100%; padding: 12px;"
+                       name="Email"
+                       type="email"
+                       value=""
+                       placeholder="abc@email.com">
+            </div>
+
+            <div class="contact-form-group">
+                <label class="contact-form-label" for="Message">Lời Nhắn:</label>
+                <textarea class="form-control"
+                          name="Message"
+                          style="width:100%; padding: 12px;"
+                          placeholder="Chúng tôi có thể giúp gì cho bạn?"
+                          rows="10"></textarea>
+            </div>
+
+            <div class="contact-form-group" style="padding: 10px 0px 40px;">
+                <input type="submit" class="btn-send-massage" style="color: white">
+            </div>
+
+        </form>
+    </div>
+
+
+
+
+</div>
+<!-- End container -->

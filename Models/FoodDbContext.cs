@@ -42,6 +42,7 @@ namespace FastFood.Models
         public DbSet<ItemCustomers> Customers { get; set; }
         public DbSet<ItemOrders> Orders { get; set; }
         public DbSet<ItemOrdersDetail> OrdersDetails { get; set; }
+        public DbSet<ItemAdv> Advs { get; set; }
 
         private const string sqlConnectString = "Server=DESKTOP-OEACG0K; Database = FastFood1; UID=sa; password=1;";
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

@@ -1,11 +1,6 @@
-﻿@using X.PagedList.Mvc.Core
-@using X.PagedList
-@using X.PagedList.Web.Common
-
-@{
+﻿@{
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-@model IPagedList<FastFood.Models.ItemProducts>
 
 @functions {
     public FoodDbContext db = new FoodDbContext();
@@ -31,7 +26,7 @@
 <div class="container">
     <div class="pagination">
         <h2>Tìm kiếm</h2>
-        <span>Home</span><span>  >   </span><span><a href="">Kết quả tìm kiếm</a></span>
+        <span>Home</span><span>  >   </span><span><a href="">Tag</a></span>
     </div>
     <div class="row_0">
 
@@ -90,7 +85,7 @@
         <div class="col-9">
             <div class="ourproduct-item">
                 <div class="product-sort">
-                    <h3>Kết quả tìm kiếm: @Html.Raw(ViewBag.key!=null?ViewBag.key: string.Format("{0:#,#.}",ViewBag.fromPrice)+"đ" + " - " + string.Format("{0:#,#.}",ViewBag.toPrice) + "đ")</h3>
+                    <h3>Tags: @ViewBag.PrTags.Name</h3>
                 </div>
 
                 <div class="row-item">
@@ -142,12 +137,4 @@
     </div>
 </div>
 <!-- End container -->
-@Html.PagedListPager(
-    Model, p => Url.Action("Index", new {page = p}),
-    new PagedListRenderOptions
-    {
-        PageClasses = new string[] { "page-link-c" },
-        UlElementClasses = new string[] { "pagination-c" },
-        LiElementClasses = new string[] { "page-item2-c" }
-    }
-)
+

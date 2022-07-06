@@ -1,0 +1,37 @@
+﻿@{
+    Layout = "_LayoutAdmin";
+}
+
+
+<div class="col-md-12">
+    <div style="margin-bottom:5px;">
+        <a href="/Admin/Tags/Add" class="btn btn-primary btn-sm">Add Tag</a>
+    </div>
+    <div class="panel panel-primary">
+        <div class="panel-heading">List Tags</div>
+        <div class="panel-body">
+            <table class="table table-bordered table-hover">
+                <tr>
+                    <th>Tags Name</th>
+                    <th>#</th>
+                </tr>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.Name</td>
+                        <td style="text-align:center;">
+                            <a href="/Admin/Tags/Edit/@item.Id">Edit</a>&nbsp;
+                            <a href="/Admin/Tags/Delete/@item.Id" onclick="return window.confirm('Are you sure?');">Delete</a>
+                        </td>
+                    </tr>
+                }
+            </table>
+            <style type="text/css">
+                .pagination {
+                    padding: 0px;
+                    margin: 0px;
+                }
+            </style>
+        </div>
+    </div>
+</div>

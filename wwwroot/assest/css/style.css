@@ -661,7 +661,7 @@ body {
     }
 
 .sidebar {
-    padding-right: 30px;
+    padding-right: 60px;
 }
 
     .sidebar ul li {
@@ -745,7 +745,7 @@ body {
     padding: 8px;
     text-align: center;
 }
-
+.btn-send-massage,
 .continueShopping button {
     text-transform: capitalize;
     font-weight: 400;
@@ -811,6 +811,7 @@ body {
 .btn_ctr button:hover,
 .continueShopping button:hover,
 .del-btn:hover,
+.btn-send-massage:hover,
 .cart-detail__input button:hover {
     background: #cf2929;
     cursor: pointer;
@@ -1158,4 +1159,33 @@ body {
 
     .ui-slider-handle + span {
         background: #06b9c0;
+    }
+
+.contact-form-label{
+    width: 180px;
+    display: flex;
+    align-content: center;
+    padding: 10px 0 10px;
+}
+
+.contact-form{
+    margin: 0px -15px 0;
+}
+.btn-send-massage{
+    margin-top:0px;
+}
+
+.element-tags {
+    border: 1px solid #cccc;
+    padding: 6px;
+    border-radius: 4px;
+    margin-bottom: 4px;
+    text-decoration: none;
+    color: black;
+    display: inline-block;
+}
+
+    .element-tags:hover {
+        background-color: #cf2929;
+        color: white;
     }

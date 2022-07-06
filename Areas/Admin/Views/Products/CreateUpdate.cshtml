@@ -79,12 +79,12 @@
                             }
                             @foreach (Categories itemCategory in Categories)
                             {
-                            <!option @if(Model != null && Model.CategoryId == itemCategory.Id) {<text> selected</text>} value="@itemCategory.Id">@itemCategory.Name</!option>
-                            List<Categories> CategoriesSub = ListCategoriesSub(itemCategory.Id);
-                            foreach (Categories itemSub in CategoriesSub)
-                            {
-                            <option value="@itemSub.Id">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;@itemSub.Name</option>
-                            }
+                                <!option @if(Model != null && Model.CategoryId == itemCategory.Id) {<text> selected</text>} value="@itemCategory.Id">@itemCategory.Name</!option>
+                                List<Categories> CategoriesSub = ListCategoriesSub(itemCategory.Id);
+                                foreach (Categories itemSub in CategoriesSub)
+                                {
+                                    <!option value="@itemSub.Id" @if(Model != null && Model.CategoryId == itemSub.Id) {<text> selected</text>}>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;@itemSub.Name</!option>
+                                }
                             }
                         </select>
                     </div>
